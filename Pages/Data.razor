@@ -1,0 +1,56 @@
+@page "/data"
+@inject IDataServices DataServices
+@using eDiploma.Models.DTOs
+
+<PageTitle>Data</PageTitle>
+
+<h1>Data</h1>
+
+Hi, I'm the data dude displaying the data in the SQLite database!
+We're currently only displaying our users.
+
+@if (users is null)
+{
+    <p><em>Loading...</em></p>  
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>PhoneNumber</th>
+                <th>CreatedDate</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>@user.Username</td>
+                    <td>@user.Password</td>
+                    <td>@user.Email</td>
+                    <td>@user.Age</td>
+                    <td>@user.PhoneNumber</td>
+                    <td>@user.CreatedDate</td>
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<UserDTO> users;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        users = await Task.FromResult(DataServices.GetAllUsers());
+    }
+}
